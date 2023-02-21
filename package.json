@@ -1,12 +1,13 @@
 {
-  "name": "node-typescript-boilerplate",
+  "name": "imagescrapermkiii",
   "version": "0.0.0",
-  "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
+  "description": "",
   "type": "module",
   "engines": {
     "node": ">= 18.12 <19"
   },
   "devDependencies": {
+    "@types/cron": "^2.0.0",
     "@types/jest": "~29.2",
     "@types/node": "~18",
     "@typescript-eslint/eslint-plugin": "~5.44",
@@ -33,9 +34,12 @@
     "prettier": "prettier --config .prettierrc --write .",
     "test:watch": "jest --watch"
   },
-  "author": "Jakub Synowiec <jsynowiec@users.noreply.github.com>",
+  "author": "behova",
   "license": "Apache-2.0",
   "dependencies": {
+    "cron": "^2.2.0",
+    "dotenv": "^16.0.3",
+    "envalid": "^7.3.1",
     "tslib": "~2.4"
   },
   "volta": {
