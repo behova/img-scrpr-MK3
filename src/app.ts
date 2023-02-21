@@ -14,6 +14,7 @@ class App {
     const scraperTimer = new CronJob(this.scraperSch, function () {
       const { DELAY_MIN, DELAY_MAX } = process.env;
       const scraper = new Scraper(DELAY_MAX, DELAY_MIN);
+      scraper.initScraper();
       console.log(
         'scraper will init between:',
         scraper.delayMax,

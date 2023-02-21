@@ -5,8 +5,6 @@ class Scraper {
   constructor(delayMax: string, delayMin: string) {
     this.delayMax = Number(delayMax);
     this.delayMin = Number(delayMin);
-    const delay = this.setDelay();
-    this.initScraper(delay);
   }
 
   private setDelay(): number {
@@ -16,10 +14,20 @@ class Scraper {
     return delay;
   }
 
-  private initScraper(delay: number): void {
-    setTimeout(() => {
-      console.log('scraper initiated with delay:', delay);
-    }, delay);
+  public async initScraper(): Promise<void> {
+    const delay = this.setDelay();
+    await new Promise((resolve) => setTimeout(resolve, delay));
+    console.log('scraper initiated after:', delay);
+    const core = this.getCore();
+    console.log('core:', core);
+  }
+
+  private getCore(): string {
+    const coreList = ['fourChan', 'reddit'];
+
+    const number = Math.random();
+    const choice = number >= 0.5 ? coreList[1] : coreList[0];
+    return choice;
   }
 }
 
