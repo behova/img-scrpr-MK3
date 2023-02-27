@@ -1,27 +1,10 @@
 import puppeteer from 'puppeteer';
 
-interface CoreMessage {
-  scrollAmount: number;
-  headless: boolean;
-}
-
-function getRedditSource(): string {
-  const redditSources = [
-    'https://www.reddit.com/r/wallpapers/',
-    'https://www.reddit.com/r/wallpaper/',
-    'https://www.reddit.com/r/wallpaperdump/',
-  ];
-
-  const number = Math.floor(Math.random() * redditSources.length);
-  return redditSources[number];
-}
-
 async function redditCore(
   scrollAmount: number,
   headless: boolean,
+  source: string,
 ): Promise<string[][]> {
-  const source = getRedditSource();
-
   const result: string[][] = [];
   //pupeteer init
   const browser = await puppeteer.launch({ headless: headless });
@@ -84,15 +67,5 @@ async function redditCore(
 
   return result;
 }
-console.log('REDDIT CHILD CREATED', process.pid);
 
-process.on('message', async (message: CoreMessage) => {
-  try {
-    const result = await redditCore(message.scrollAmount, message.headless);
-    process.send(result);
-    process.exit(0);
-  } catch (error) {
-    console.log(error);
-    process.exit(1);
-  }
-});
+export default redditCore;

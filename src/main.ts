@@ -2,9 +2,14 @@ import 'dotenv/config';
 import validateEnv from './utils/ValidateEnv.js';
 import App from './app.js';
 
-validateEnv();
+const env = validateEnv();
 
-const app = new App(process.env.SCRAPER_SCHEDULE, process.env.CULL_SCHEDULE);
+const app = new App(
+  env.SCRAPER_SCHEDULE,
+  env.CULL_SCHEDULE,
+  env.DELAY_MAX,
+  env.DELAY_MIN,
+);
 
 app.initScraperSchedule();
 app.initCullSchedule();

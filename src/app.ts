@@ -1,19 +1,29 @@
 import { CronJob } from 'cron';
-import Scraper from './scraper.js';
+import ScraperInterface from './scraperInterface.js';
 
 class App {
   public scraperSch: string;
   public cullSch: string;
+  public delayMax: number;
+  public delayMin: number;
 
-  constructor(scraperSch: string, cullSch: string) {
+  constructor(
+    scraperSch: string,
+    cullSch: string,
+    delayMax: number,
+    delayMin: number,
+  ) {
     this.scraperSch = scraperSch;
     this.cullSch = cullSch;
+    this.delayMax = delayMax;
+    this.delayMin = delayMin;
   }
-
+  //todo: this isn't getting any defined variables for delay
   public initScraperSchedule(): void {
+    const delayMx = this.delayMax;
+    const delayMn = this.delayMin;
     const scraperTimer = new CronJob(this.scraperSch, function () {
-      const { DELAY_MIN, DELAY_MAX } = process.env;
-      const scraper = new Scraper(DELAY_MAX, DELAY_MIN);
+      const scraper = new ScraperInterface(delayMx, delayMn);
       scraper.initScraper();
       console.log(
         'scraper will init between:',

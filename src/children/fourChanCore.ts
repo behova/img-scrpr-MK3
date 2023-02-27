@@ -1,25 +1,10 @@
 import puppeteer from 'puppeteer';
 
-interface CoreMessage {
-  scrollAmount: number;
-  headless: boolean;
-}
-
-function getFourChanSource(): string {
-  const fourChanSources = [
-    'https://boards.4chan.org/wg/2',
-    'https://boards.4channel.org/w/',
-  ];
-
-  const number = Math.floor(Math.random() * fourChanSources.length);
-  return fourChanSources[number];
-}
-
 async function fourChanCore(
   scrollAmount: number,
   headless: boolean,
+  source: string,
 ): Promise<string[][]> {
-  const source = getFourChanSource();
   //pupeteer init
   const browser = await puppeteer.launch({ headless: headless });
   console.log('launching puppeteer');
@@ -64,15 +49,4 @@ async function fourChanCore(
   return imgLinks;
 }
 
-console.log('FOURCHAN CHILD CREATED', process.pid);
-
-process.on('message', async (message: CoreMessage) => {
-  try {
-    const result = await fourChanCore(message.scrollAmount, message.headless);
-    process.send(result);
-    process.exit(0);
-  } catch (error) {
-    console.log(error);
-    process.exit(1);
-  }
-});
+export default fourChanCore;

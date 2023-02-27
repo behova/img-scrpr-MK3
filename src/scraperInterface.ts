@@ -1,13 +1,13 @@
-import { fork } from 'child_process';
+import { fork, Serializable } from 'child_process';
 import path from 'path';
 
-class Scraper {
+class scraperInterface {
   public delayMax: number;
   public delayMin: number;
 
-  constructor(delayMax: string, delayMin: string) {
-    this.delayMax = Number(delayMax);
-    this.delayMin = Number(delayMin);
+  constructor(delayMax: number, delayMin: number) {
+    this.delayMax = delayMax;
+    this.delayMin = delayMin;
   }
 
   private setDelay(): number {
@@ -16,42 +16,35 @@ class Scraper {
     );
     return delay;
   }
-
+  //todo this is a mess with the  promises logging result before it completes
   public async initScraper(): Promise<void> {
     //get delay time
     const delay = this.setDelay();
     //wait for randomized delay
     await new Promise((resolve) => setTimeout(resolve, delay));
     console.log('scraper initiated after:', delay);
-    //get puppeteer core
-    const core = this.getCore();
-    console.log('core:', core);
-    this.runScraper(core);
+    const result = this.runScraper();
+    console.log(result);
   }
 
-  private getCore(): string {
-    const coreList = ['fourChanCore.js', 'redditCore.js'];
-
-    const number = Math.random();
-    const choice = number >= 0.5 ? coreList[1] : coreList[0];
-    return choice;
-  }
-
-  private runScraper(core: string): void {
-    const childRoute = path.resolve(`./build/src/children/${core}`);
+  public runScraper(): Serializable {
+    const childRoute = path.resolve(`./build/src/children/scraper.js`);
 
     const child = fork(childRoute);
+    let result: Serializable;
     child.send({ scrollAmount: 5, headless: true });
 
     child.on('message', (message): void => {
-      console.log(message);
+      result = message;
     });
 
     child.on('exit', (code): void => {
       console.log('Child exit on', code);
     });
     console.log(child.exitCode);
+
+    return result;
   }
 }
 
-export default Scraper;
+export default scraperInterface;

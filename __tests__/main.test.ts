@@ -1,3 +1,9 @@
+describe('Main', () => {
+  test('check env', () => {
+    expect(2).toBe(2);
+  });
+});
+
 // import { Delays, greeter } from '../src/main.js';
 
 // describe('greeter function', () => {
