@@ -1,35 +1,55 @@
+import { fork } from 'child_process';
 import { CronJob } from 'cron';
-import ScraperInterface from './scraperInterface.js';
+import path from 'path';
 
 class App {
   public scraperSch: string;
   public cullSch: string;
   public delayMax: number;
   public delayMin: number;
+  public imagesPath: string;
 
   constructor(
     scraperSch: string,
     cullSch: string,
     delayMax: number,
     delayMin: number,
+    imagesPath: string,
   ) {
     this.scraperSch = scraperSch;
     this.cullSch = cullSch;
     this.delayMax = delayMax;
     this.delayMin = delayMin;
+    this.imagesPath = imagesPath;
   }
-  //todo: this isn't getting any defined variables for delay
   public initScraperSchedule(): void {
-    const delayMx = this.delayMax;
-    const delayMn = this.delayMin;
+    const delayMax = this.delayMax;
+    const delayMin = this.delayMin;
+    const imagesPath = this.imagesPath;
     const scraperTimer = new CronJob(this.scraperSch, function () {
-      const scraper = new ScraperInterface(delayMx, delayMn);
-      scraper.initScraper();
-      console.log(
-        'scraper will init between:',
-        scraper.delayMax,
-        scraper.delayMin,
+      //fork child directly from app. build delay into child process
+      const childRoute = path.resolve(
+        `./build/src/children/scraperInterface.js`,
       );
+
+      const child = fork(childRoute);
+      child.send({
+        scrollAmount: 5,
+        headless: true,
+        imagesPath: imagesPath,
+        delayMax: delayMax,
+        delayMin: delayMin,
+      });
+      console.log('scraper will init between:', delayMax, delayMin);
+
+      child.on('message', (message): void => {
+        console.log(message);
+      });
+
+      child.on('exit', (code): void => {
+        console.log('Child exit on', code);
+      });
+      //console.log(child.exitCode);
     });
     scraperTimer.start();
   }

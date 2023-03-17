@@ -9,6 +9,7 @@ const app = new App(
   env.CULL_SCHEDULE,
   env.DELAY_MAX,
   env.DELAY_MIN,
+  env.IMAGES_PATH,
 );
 
 app.initScraperSchedule();
