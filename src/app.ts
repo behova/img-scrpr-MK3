@@ -40,7 +40,7 @@ class App {
         delayMax: delayMax,
         delayMin: delayMin,
       });
-      console.log('scraper will init between:', delayMax, delayMin);
+      console.log('Timer Initialized');
 
       child.on('message', (message): void => {
         console.log(message);
@@ -49,16 +49,8 @@ class App {
       child.on('exit', (code): void => {
         console.log('Child exit on', code);
       });
-      //console.log(child.exitCode);
     });
     scraperTimer.start();
-  }
-
-  public initCullSchedule(): void {
-    const cullTimer = new CronJob(this.cullSch, function () {
-      console.log('hello cull');
-    });
-    cullTimer.start();
   }
 }
 

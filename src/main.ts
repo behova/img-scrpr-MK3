@@ -13,4 +13,3 @@ const app = new App(
 );
 
 app.initScraperSchedule();
-app.initCullSchedule();

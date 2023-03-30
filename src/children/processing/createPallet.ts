@@ -1,5 +1,13 @@
-function createPallet(buffer: Buffer): string {
-  const array = buffer;
+import sharp from 'sharp';
+
+async function createPallet(filename: string): Promise<string> {
+  const { data } = await sharp(`${filename}-thumb.jpeg`)
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  //console.log(info);
+
+  const array = new Uint8ClampedArray(data.buffer);
 
   const pArray: number[][] = [];
   for (let i = 0; i < array.length; i += 3) {

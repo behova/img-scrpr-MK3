@@ -7,15 +7,15 @@ async function fourChanCore(
 ): Promise<string[][]> {
   //pupeteer init
   const browser = await puppeteer.launch({ headless: headless });
-  console.log('launching puppeteer');
+  console.log('Puppeteer Launched');
   const page = await browser.newPage();
 
   //specify url
   await page.goto(source);
-  console.log('root page loaded');
+  console.log('Chrome Loaded Root');
   await page.waitForNetworkIdle();
 
-  console.log(`scrolling ${scrollAmount} times`);
+  //console.log(`scrolling ${scrollAmount} times`);
 
   //Load more images by scrolling down (i) times
   for (let i = 0; i < scrollAmount; i += 1) {

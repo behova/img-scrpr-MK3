@@ -1,7 +1,7 @@
 interface DbObject {
   fileName: string;
   sourceName: string;
-  pallet: string[][];
+  pallet: string;
   dimensions: string;
 }
 

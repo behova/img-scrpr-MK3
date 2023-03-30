@@ -45,9 +45,7 @@ class Scraper {
         number = Math.floor(Math.random() * Scraper.fourChanSources.length);
         return Scraper.fourChanSources[number];
       default:
-        console.log('ERROR: returning default source to scraper');
-        number = Math.floor(Math.random() * Scraper.redditSources.length);
-        return Scraper.redditSources[number];
+        throw new Error('Could not retrieve source link');
     }
   }
 
@@ -62,9 +60,7 @@ class Scraper {
         result = await fourChanCore(this.scrollAmount, this.headless, source);
         return result;
       default:
-        console.log('ERROR: running default scraper core');
-        result = await redditCore(this.scrollAmount, this.headless, source);
-        return result;
+        throw new Error('Could not init scraper core');
     }
   }
 }
