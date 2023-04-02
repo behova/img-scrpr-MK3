@@ -54,7 +54,7 @@ async function redditCore(
     // create key-pair for each name/image-source
     for (const i in source) {
       const obj: string[] = [];
-      obj.push(newName);
+      obj.push(`${newName}${i}`);
       obj.push(source[i]);
       result.push(obj);
     }
